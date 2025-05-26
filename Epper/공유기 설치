@@ -1,0 +1,54 @@
+// 문제: https://www.acmicpc.net/problem/2110
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+
+    //가장 인접한 두 공유기 사이의 거리가 dist이도록 공유기를 설치했을 때, 설치된 공유기 개수
+    public static int cntRouter(int dist, int[] house) {
+        int cnt = 1;
+        int cur = house[0];
+
+        for (int i = 1; i < house.length; i++) {
+            if (house[i] - cur >= dist) {
+                cnt++;
+                cur = house[i];
+            }
+        }
+        return cnt;
+    }
+
+    //c개의 공유기 설치 가능한 최소 인접 거리 중 최댓값 (=upper bound)
+    public static int upperSearch(int left, int right, int target, int[] house) {
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            int installed = cntRouter(mid, house);
+
+            if (installed >= target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left - 1;
+    }
+
+    public static int solution(int n, int c, int[] house) {
+        Arrays.sort(house);
+        return upperSearch(1, house[n - 1] - house[0], c, house);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int c = sc.nextInt();
+        int[] house = new int[n];
+        for (int i = 0; i < n; i++) {
+            house[i] = sc.nextInt();
+        }
+
+        System.out.println(solution(n, c, house));
+    }
+}
