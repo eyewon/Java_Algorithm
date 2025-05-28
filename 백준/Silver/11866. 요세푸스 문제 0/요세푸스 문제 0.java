@@ -10,7 +10,6 @@ class Main {
     	int K = Integer.parseInt(st.nextToken());
     	
     	Queue<Integer> q= new LinkedList<>();
-    	int[] arr = new int[N];
     	
     	for(int i=1; i<=N; i++) {
     		q.add(i);
