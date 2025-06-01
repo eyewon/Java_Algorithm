@@ -4,32 +4,35 @@ import java.util.*;
 class Main{
 	static List<Integer> list = new ArrayList<>();
 	
-	public static void separate(char[] input, int i, int j) {
-		if(i==j)
+	public static void separate(char[] input, int start, int size) {
+		if(size == 1)
 			return;
-		if(i<j) {
-			int len = (j-i+1)/3;
-			for(int k=i+len; k<i+2*len; k++) {
-				input[k] = ' ';
-			}
-			separate(input, i, i+len-1);
-			separate(input, i+2*len, i+3*len-1);
+		
+		int len = size/3;
+		for(int k=start+len; k<start+2*len; k++) {
+			input[k] = ' ';
 		}
+		separate(input, start, size/3);
+		separate(input, start+2*len, size/3);
+		
 		
 	}
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
-		String st;
-		while((st = br.readLine())!= null) {
-			int N = Integer.parseInt(st);
-			char[] input= new char[(int)Math.pow(3, N)];
-			for(int i=0; i<(int)Math.pow(3, N); i++)
-				input[i]='-';
-			separate(input, 0, input.length-1);
-	
-			sb.append(input).append("\n");
+		String input;
+
+		while((input=br.readLine()) != null) {
+			int N = Integer.parseInt(input);
+			int size = (int)Math.pow(3, N);
+			char[] arr= new char[size];
+			for(int i=0; i<size; i++)
+				arr[i]='-';
+			
+			separate(arr, 0, size);
+			sb.append(arr).append("\n");
+
 		}
 		System.out.print(sb);
 	}
