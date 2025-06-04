@@ -16,13 +16,9 @@ class Main {
 		int T = Integer.parseInt(st.nextToken());
 		int P = Integer.parseInt(st.nextToken());
 		
-		Arrays.sort(size);
 		int sum=0;
 		for(int i=0; i<6; i++) {
-			int t=0;
-			while(t*T < size[i])
-				t++;
-			sum+=t;
+			sum += Math.ceil((double)size[i]/T);
 		}
 		
 		int p1 = N/P;
