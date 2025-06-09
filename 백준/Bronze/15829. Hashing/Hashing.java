@@ -6,12 +6,14 @@ class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int L = Integer.parseInt(br.readLine());
 		String st = br.readLine();
-		int hash = 0;
-		for(int i=0; i<st.length(); i++) {
+		long hash = 0;
+		long r = 1;
+		long M = 1234567891;
+		for(int i=0; i<L; i++) {
 			int a = st.charAt(i)-'a'+1;
-			int r = (int)Math.pow(31, i);
-			hash += (a*r) % 1234567891;
+			hash += (a*r);
+			r = (31*r) % M;
 		}
-		System.out.println(hash);
+		System.out.println(hash % M);
  	}
 }
