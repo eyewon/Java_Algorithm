@@ -17,15 +17,11 @@ class Main {
 		
 		int n = N/3;
 		
-		cutPaper(arr, x, y, n);
-		cutPaper(arr, x, y+n, n);
-		cutPaper(arr, x, y+2*n, n);
-		cutPaper(arr, x+n, y+n, n);
-		cutPaper(arr, x+n, y+2*n, n);
-		cutPaper(arr, x+n, y, n);
-		cutPaper(arr, x+2*n, y, n);
-		cutPaper(arr, x+2*n, y+n, n);
-		cutPaper(arr, x+2*n, y+2*n, n);
+		for(int i=0; i<3; i++) {
+			for(int j=0; j<3; j++) {
+				cutPaper(arr, x+i*n, y+j*n, n);
+			}
+		}
 	}
 	
 	public static boolean canCut(int[][] arr, int x, int y, int N) {
