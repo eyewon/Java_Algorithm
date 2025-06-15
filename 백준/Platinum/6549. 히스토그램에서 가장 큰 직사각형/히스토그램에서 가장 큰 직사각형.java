@@ -3,23 +3,31 @@ import java.util.*;
 
 class Main {
 	
-	public static long getArea(long[] arr) {
-		Stack<Integer> stack = new Stack<>();
-		int i = 0;
-		long max=0;
-		while(i < arr.length) {
-			if(stack.isEmpty() || arr[stack.peek()] <= arr[i]) {
-				stack.push(i++);
+	public static long getArea(long[] arr, int left, int right) {
+		if(left == right) return arr[left]; //하나일 경우
+		
+		int mid = (left + right)/2;
+		long leftArea = getArea(arr, left, mid);
+		long rightArea = getArea(arr, mid+1, right);
+		long crossArea = getCrossArea(arr, left, right, mid);
+		
+		return Math.max(Math.max(rightArea, leftArea), crossArea);
+	}
+	
+	public static long getCrossArea(long[] arr, int left, int right, int mid) {
+		int l = mid, r = mid+1;
+		long h = Math.min(arr[l], arr[r]);
+		long max = h*2;
+		
+		while(left < l || r < right) {
+			if(r < right && (l==left || arr[l-1] < arr[r+1])) {
+				r++;
+				h = Math.min(h, arr[r]);
 			}else {
-				long h = arr[stack.pop()];
-				long w = stack.isEmpty()?i:i-(stack.peek()+1);
-				max  = max < h*w? h*w: max;
+				l--;
+				h = Math.min(h, arr[l]);
 			}
-		}
-		while(!stack.isEmpty()) {
-			long h = arr[stack.pop()];
-			long w = stack.isEmpty()?i:i-(stack.peek()+1);
-			max  = max < h*w? h*w: max;
+			max = Math.max(max, h * (r-l+1));
 		}
 		return max;
 	}
@@ -34,7 +42,7 @@ class Main {
 			for(int i=0; i<n; i++) {
 				hist[i] = Long.parseLong(st.nextToken());
 			}
-			System.out.println(getArea(hist));
+			System.out.println(getArea(hist, 0, n-1));
 		}
 	}
 }
