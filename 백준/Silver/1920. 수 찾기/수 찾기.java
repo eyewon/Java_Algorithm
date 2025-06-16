@@ -3,29 +3,26 @@ import java.util.*;
 
 class Main {
 
-	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		Set<Integer> arr = new HashSet<>();
+		int n = Integer.parseInt(br.readLine());
+		int[] arr = new int[n];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i=0; i<N; i++) {
-			arr.add(Integer.parseInt(st.nextToken()));
+		for(int i=0; i<n; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		
-		int M = Integer.parseInt(br.readLine());
-		int[] arr2 = new int[M];
+		Arrays.sort(arr);
+		int m = Integer.parseInt(br.readLine());
 		st = new StringTokenizer(br.readLine());
 		StringBuilder sb = new StringBuilder();
-		
-		for(int i=0; i<M; i++) {
-			arr2[i] = Integer.parseInt(st.nextToken());
-			if(arr.contains(arr2[i]))
-				sb.append("1").append("\n");
-			else
+		for(int i=0; i<m; i++) {
+			int key = Arrays.binarySearch(arr, Integer.parseInt(st.nextToken()));
+			if(key < 0) {
 				sb.append("0").append("\n");
+			}else {
+				sb.append("1").append("\n");
+			}
 		}
-		
 		System.out.println(sb);
 	}
 }
