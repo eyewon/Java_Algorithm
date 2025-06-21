@@ -17,7 +17,7 @@ class Main {
 			int nx = x + dx[i];
 			int ny = y + dy[i];
 			
-			if(nx > 0 && nx <= N && ny > 0 && ny <=N) {
+			if(nx >= 0 && nx < N && ny >= 0 && ny <N) {
 				if(!visited[nx][ny] && map[nx][ny] == 1) {
 					dfs2D(nx, ny);
 				}
@@ -29,21 +29,21 @@ class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		N = Integer.parseInt(br.readLine());
-		map = new int[N+1][N+1];
-		visited = new boolean[N+1][N+1];
+		map = new int[N][N];
+		visited = new boolean[N][N];
 		
-		for(int i=1; i<=N; i++) {
+		for(int i=0; i<N; i++) {
 			String[] st = br.readLine().split("");
-			for(int j=1; j<=N; j++) {
-				map[i][j] = Integer.parseInt(st[j-1]);
+			for(int j=0; j<N; j++) {
+				map[i][j] = Integer.parseInt(st[j]);
 			}
 		}
 		
 		int totalCnt = 0;
 		ArrayList<Integer> cntList = new ArrayList<>();
 		
-		for(int i=1; i<=N; i++) {
-			for(int j=1; j<=N; j++) {
+		for(int i=0; i<N; i++) {
+			for(int j=0; j<N; j++) {
 				if(!visited[i][j] && map[i][j]==1) {
 					// 새로운 단지 발견
 					cnt = 0;
