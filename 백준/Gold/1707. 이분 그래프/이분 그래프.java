@@ -4,7 +4,7 @@ import java.util.*;
 class Main {
 	static ArrayList<Integer>[] graph;
 	static int[] color;
-	static boolean isBipartie;
+	static boolean isBipartite;
 	
 	public static void bfs(int s, int c) {
 		Queue<Integer> queue = new LinkedList<>();
@@ -14,12 +14,10 @@ class Main {
 		
 		while(!queue.isEmpty()) {
 			int node = queue.poll();
-			
-			Collections.sort(graph[node]);
-			
+
 			for(int next: graph[node]) {
 				if(color[next]==color[node]) {
-					isBipartie=false;
+					isBipartite=false;
 					return;
 				}
 				if(color[next]==0) {
@@ -55,12 +53,12 @@ class Main {
 				graph[v].add(u);
 			}
 			
-			isBipartie = true;
+			isBipartite = true;
 			for(int s=1; s<=V; s++) {
 				if(color[s]==0)
 					bfs(s,1);
 			}
-			System.out.println(isBipartie?"YES":"NO");
+			System.out.println(isBipartite?"YES":"NO");
 			
 		}
 	}
