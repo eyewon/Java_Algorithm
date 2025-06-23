@@ -23,11 +23,12 @@ class Main {
 			
 			for(int i=1; i<=6; i++) {
 				int next = cur+i;
-				if(next <= 100 && board[next]!=0) {
-					visited[next] = true;
+				if(next > 100) continue; 
+				
+				if(board[next]!=0) {
 					next = board[next];
 				}
-				if(next <= 100 && !visited[next]) {
+				if(!visited[next]) {
 					queue.add(next);
 					visited[next] = true;
 					dist[next] = dist[cur] + 1;
