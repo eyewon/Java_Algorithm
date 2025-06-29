@@ -1,45 +1,45 @@
+import java.io.*;
 import java.util.*;
 
-public class Main {
-    static final int MAX = 100000;
-
-    public static int findFastestTime(int N, int K) {
-        int[] dist = new int[MAX + 1];
-        Arrays.fill(dist, -1);
-        Deque<Integer> dq = new ArrayDeque<>();
-        
-        dist[N] = 0;
-        dq.addFirst(N);
-        
-        while (!dq.isEmpty()) {
-            int x = dq.pollFirst();
-            if (x == K) {
-                return dist[x];
-            }
-            
-            // 순간이동 (0초)
-            int nx = 2 * x;
-            if (nx <= MAX && nx >= 0 && dist[nx] == -1) {
-                dist[nx] = dist[x];
-                dq.addFirst(nx);
-            }
-            
-            // 걷기 (1초)
-            int[] moves = {x - 1, x + 1};
-            for (int next : moves) {
-                if (next >= 0 && next <= MAX && dist[next] == -1) {
-                    dist[next] = dist[x] + 1;
-                    dq.addLast(next);
-                }
-            }
-        }
-        return -1; // 혹시 못찾으면
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int K = sc.nextInt();
-        System.out.println(findFastestTime(N, K));
-    }
+class Main {
+	
+	public static void bfs(int[] distance, int N, int K) {
+		Deque<Integer> dq = new ArrayDeque<>();
+		Arrays.fill(distance, Integer.MAX_VALUE);
+		
+		distance[N] = 0;
+		dq.addFirst(N);
+		
+		while(!dq.isEmpty()) {
+			int cur = dq.poll();
+			
+			for(int next : new int[] {cur+1, cur-1, cur*2 }) {
+				if(next >=0 && next<distance.length) {
+					// 0초짜리 순간이동 
+					if(next==cur*2 && distance[next] > distance[cur]) {
+						distance[next]=distance[cur];
+						dq.addFirst(next); // 앞에 넣기 
+						
+					// 1초자리 걷기
+					}else if(next != cur*2 && distance[next] > distance[cur]+1){
+						distance[next]=distance[cur]+1;
+						dq.addLast(next); // 뒤에 넣기 
+					}
+				}
+			}
+		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		int N = Integer.parseInt(st.nextToken());
+		int K = Integer.parseInt(st.nextToken());
+		
+		int[] distance = new int[100_001];
+		
+		bfs(distance, N, K);
+		System.out.println(distance[K]);
+	}
 }
