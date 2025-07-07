@@ -41,8 +41,7 @@ class Main {
 		}
 		Collections.reverse(li);
 		for(int i=0; i<li.size(); i++) {
-			sb.append(li.get(i));
-			if(i<li.size()-1) sb.append(" ");
+			sb.append(li.get(i)).append(" ");
 		}
 		System.out.println(sb);
 	}
