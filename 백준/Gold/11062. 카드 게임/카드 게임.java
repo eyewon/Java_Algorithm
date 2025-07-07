@@ -3,20 +3,6 @@ import java.util.*;
 
 class Main {
 	
-	public static int[][] cardGame(int[] card, int N) {
-		int[][] dp = new int[N+1][N+1]; // dp[i][j]: i번부터 j번까지 구간에서 얻을 수 있는 최대 점수
-		
-		for(int len = 2; len <= N; len++) {
-			for(int i=0; i+len-1 <=N; i++) {
-				int j=i+len-1;
-				for(int k=i; k<=j; k++) {
-					dp[i][j] = Math.max(dp[i][j], dp[i][k]+dp[k][j]+Math.max(card[i], card[j]));
-				}
-			}
-		}
-		return dp;
-	}
-	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
