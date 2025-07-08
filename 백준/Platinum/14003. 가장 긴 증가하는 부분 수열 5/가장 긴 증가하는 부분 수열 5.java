@@ -3,6 +3,20 @@ import java.util.*;
 
 class Main {
 	
+	public static int lowerBound(int[] arr, int len, int key) {
+		int low = 0, high = len;
+		
+		while(low < high) {
+			int mid = low + (high-low)/2 ;
+			if(arr[mid] < key) {
+				low = mid+1;
+			}else {
+				high = mid;
+			}
+		}
+		return low;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -19,8 +33,7 @@ class Main {
 		
 		int len = 0; // LIS의 길이
 		for(int i=0; i<N; i++) {
-			int pos = Arrays.binarySearch(dp, 0, len, arr[i]);
-			if(pos < 0) pos = -(pos+1); // lower_bound
+			int pos = lowerBound(dp, len, arr[i]);
 			
 			dp[pos] = arr[i];
 			lisIdx[i] = pos; // arr[i]는 LIS의 pos번째에 해당함
