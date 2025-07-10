@@ -1,86 +1,72 @@
 import java.io.*;
 import java.util.*;
 
-class Main {
-	static class Trans{
-		int past;
-		char oper;
-		
-		Trans(int past, char oper){
-			this.past = past;
-			this.oper = oper;
-		}
-	}
-	
-	public static Trans[] bfs(int[] count, int A) {
-		Queue<Integer> queue = new LinkedList<>();
-		Trans[] dslr = new Trans[count.length];
-		
-		queue.add(A);
-		count[A] = 0;
-		
-		while(!queue.isEmpty()) {
-			int n = queue.poll();
-			
-			int d1 = n/1000;
-			int d2 = (n/100) %10;
-			int d3 = (n/10) %10;
-			int d4 = n %10;
-			
-			int d = 2*n % 10000;
-			int s = n==0? 9999: n-1;
-			int l = d2*1000 + d3*100 + d4*10 + d1;
-			int r = d4*1000 + d1*100 + d2*10 + d3;
-			
-			if(count[d] > count[n]+1) {
-				queue.add(d);
-				count[d] = count[n]+1;
-				dslr[d] = new Trans(n, 'D');
-			} 
-			if(count[s] > count[n]+1) {
-				queue.add(s);
-				count[s] = count[n]+1;
-				dslr[s] = new Trans(n, 'S');
-			}
-			if(count[l] > count[n]+1) {
-				queue.add(l);
-				count[l] = count[n]+1;
-				dslr[l] = new Trans(n, 'L');
-			}
-			if(count[r] > count[n]+1) {
-				queue.add(r);
-				count[r] = count[n]+1;
-				dslr[r] = new Trans(n, 'R');
-			}
-		}
-		return dslr;
-	}
-	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		int T = Integer.parseInt(br.readLine());
-		
-		int[] count = new int[10_000];
-		
-		StringBuilder sb = new StringBuilder();
-		
-		for(int test_case=0; test_case<T; test_case++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			int A = Integer.parseInt(st.nextToken());
-			int B = Integer.parseInt(st.nextToken());
-			
-			Arrays.fill(count, Integer.MAX_VALUE);
-			Trans[] dslr = bfs(count, A);
-			
-			int cnt = count[B];
-			StringBuilder s = new StringBuilder();
- 			for(int i=B; i!=A; i=dslr[i].past) {
-				s.append(dslr[i].oper);
-			}
+public class Main {
+    static class Node {
+        int num;
+        String ops;
 
-			sb.append(s.reverse()).append("\n");
-		}
-		System.out.println(sb);
-	}
+        Node(int num, String ops) {
+            this.num = num;
+            this.ops = ops;
+        }
+    }
+
+    static final int MAX = 10000;
+
+    static String bfs(int start, int target) {
+        boolean[] visited = new boolean[MAX];
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(new Node(start, ""));
+        visited[start] = true;
+
+        while (!queue.isEmpty()) {
+            Node cur = queue.poll();
+
+            if (cur.num == target) {
+                return cur.ops;
+            }
+
+            int d = (cur.num * 2) % MAX;
+            int s = (cur.num == 0) ? 9999 : cur.num - 1;
+            int l = (cur.num % 1000) * 10 + (cur.num / 1000);
+            int r = (cur.num % 10) * 1000 + (cur.num / 10);
+
+            if (!visited[d]) {
+                queue.add(new Node(d, cur.ops + "D"));
+                visited[d] = true;
+            }
+            if (!visited[s]) {
+                queue.add(new Node(s, cur.ops + "S"));
+                visited[s] = true;
+            }
+            if (!visited[l]) {
+                queue.add(new Node(l, cur.ops + "L"));
+                visited[l] = true;
+            }
+            if (!visited[r]) {
+                queue.add(new Node(r, cur.ops + "R"));
+                visited[r] = true;
+            }
+        }
+
+        return ""; // 이론상 도달 못함
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+
+        StringBuilder out = new StringBuilder();
+
+        while (T-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
+
+            out.append(bfs(A, B)).append("\n");
+        }
+
+        System.out.print(out);
+    }
 }
