@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 class Main {
+	static Map<String, Integer> map;
 	static int[] parent;
 	static int[] size;
 	
@@ -21,42 +22,44 @@ class Main {
 	}
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
 		int T = Integer.parseInt(br.readLine());
-		Map<String, Integer> nameIdx;
-		
+		StringBuilder sb = new StringBuilder();
 		
 		for(int test_case = 0; test_case < T; test_case++) {
 			int F = Integer.parseInt(br.readLine());
 			
 			parent = new int[200_000];			
 			size = new int[200_000];
-			
-			nameIdx = new HashMap<>();
+			map = new HashMap<>();
 			int idx = 0;
 			
 			for(int i=0; i<F; i++) {
-				String[] input = br.readLine().split(" ");
+				StringTokenizer st = new StringTokenizer(br.readLine());
+				String A = st.nextToken();
+				String B = st.nextToken();
 				
-				if(!nameIdx.containsKey(input[0])) {
-					nameIdx.put(input[0], idx);
+				if(!map.containsKey(A)) {
+					map.put(A, idx);
 					parent[idx] = idx;
 					size[idx] = 1;
 					idx++;
 				}
 				
-				if(!nameIdx.containsKey(input[1])) {
-					nameIdx.put(input[1], idx);
+				if(!map.containsKey(B)) {
+					map.put(B, idx);
 					parent[idx] = idx;
 					size[idx] = 1;
 					idx++;
 				}
 				
-				union(nameIdx.get(input[0]), nameIdx.get(input[1]));
-				System.out.println(size[find(nameIdx.get(input[0]))]);
+				int a = map.get(A);
+				int b = map.get(B);
+				
+				union(a, b);
+				sb.append(size[find(a)]).append("\n");
 			}
-			
 		}
+		System.out.println(sb);
 	}
 
 }
