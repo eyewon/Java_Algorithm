@@ -11,10 +11,9 @@ public class Main {
 		int result = A * B * C;
 		int count[] = new int[10];
 		
-		String result_str = String.valueOf(result);
-		for(int i=0; i<result_str.length(); i++) {
-			int j = result_str.charAt(i) - '0';
-			count[j]++;
+		while(result > 0) {
+			count[result%10]++;
+			result /= 10;
 		}
 		
 		for(int i=0; i<10; i++) {
